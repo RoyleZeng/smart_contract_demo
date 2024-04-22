@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "smart-contract-demo"
+version = "0.1.0"
+description = ""
+authors = ["Phoenix"]
+readme = "README.md"
+packages = [{include = "smart_contract_demo"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.110.2"
+pydantic = "^2.7.0"
+pypika = "^0.48.9"
+asyncpg = "^0.29.0"
+mangum = "^0.17.0"
+uvicorn = "^0.29.0"
+python-jose = "^3.3.0"
+pydantic-settings = "^2.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
