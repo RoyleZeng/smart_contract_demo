@@ -16,6 +16,8 @@ mangum = "^0.17.0"
 uvicorn = "^0.29.0"
 python-jose = "^3.3.0"
 pydantic-settings = "^2.2.1"
+web3 = "^6.17.2"
+python-multipart = "^0.0.9"
 
 
 [build-system]

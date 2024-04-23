@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 from typing import Any, Dict, Optional
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class EnvironmentParameter(BaseSettings):
@@ -15,6 +15,7 @@ default_environment_parameter = EnvironmentParameter()
 class EnvironmentSettings(BaseSettings):
     class Config:
         env_file = f'config.{default_environment_parameter.stage}.env'
+        extra = "allow"
 
 
 def json_config_settings_source(settings: BaseSettings) -> Dict[str, Any]:

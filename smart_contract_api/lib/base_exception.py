@@ -1,10 +1,37 @@
 import json
-from fastapi.responses import JSONResponse
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.routing import APIRoute
 from starlette.requests import Request
-from lib.logger import error_log_handler
+from pydantic import BaseModel
+from smart_contract_api.lib.logger import error_log_handler
+from enum import Enum
+from typing import Any, Generic, List, Optional, TypeVar
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel as GenericModel
+
+STATUS = TypeVar('STATUS', bound=Enum)
+
+RESULT = TypeVar('RESULT')
+
+
+class SingleResponse(GenericModel, Generic[RESULT]):
+    result: RESULT
+
+
+class ListResponse(GenericModel, Generic[RESULT]):
+    result: List[RESULT]
+
+
+class VerificationResponse(GenericModel, Generic[STATUS, RESULT]):
+    status: STATUS
+    result: Optional[RESULT]
+
+
+def to_json_response(response: Any):
+    content = jsonable_encoder(response)
+    return JSONResponse(content=content)
 
 
 class BoException(Exception):
@@ -14,6 +41,11 @@ class BoException(Exception):
     def __init__(self, code: str, message: str):
         self.message = message
         self.code = code
+
+
+class ExceptionResponse(BaseModel):
+    message: str
+    code: str
 
 
 def exception_to_json_response(b_exc: BoException) -> JSONResponse:
