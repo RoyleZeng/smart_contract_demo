@@ -12,7 +12,7 @@ from smart_contract_api.endpoint import auth, eth
 base_env = EnvironmentParameter()
 
 _fastapi = {
-    'title': 'Eth API',
+    'title': 'Testing API',
     'version': base_env.version,
     'openapi_url': '/spec/swagger.json',
     'docs_url': '/spec/doc'

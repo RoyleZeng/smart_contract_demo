@@ -8,6 +8,8 @@ class Settings(EnvironmentSettings):
     database_password: str
     database_name: str
     port: int
+    jwt_public_key: str
+    jwt_private_key: str
 
 
 @lru_cache()
