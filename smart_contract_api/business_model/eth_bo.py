@@ -4,7 +4,7 @@ from typing import Optional
 from uuid import UUID
 from jose import jwt
 from asyncpg import Connection
-from smart_contract_api.lib.base_exception import ForbiddenException
+from smart_contract_api.lib.base_exception import ForbiddenException, ParameterViolationException
 from smart_contract_api.data_access_object import get_dao_factory, default_connection
 from smart_contract_api.data_access_object.auth import AuthDao
 from smart_contract_api.lib.setting import EnvironmentSettings
@@ -60,14 +60,24 @@ class ETHBo:
         else:
             raise ForbiddenException(message=f'Token: {user_token} is not correct')
 
-    def decode_product_token(self, token):
+    def _decode_product_token(self, token: str):
         return jwt.decode(token, self.public_key)
 
+    async def verify_token(self, product_token: str, barcodes: list[str], user_token: str):
+        if await self._get_user(user_id=user_token):
+            product = self._decode_product_token(token=product_token)
+            for barcode in barcodes:
+                if barcode not in product['barcode']:
+                    raise ParameterViolationException(message=f'barcodes: {barcodes} not match token')
+            return product
+        else:
+            raise ForbiddenException(message=f'Token: {user_token} is not correct')
 
-if __name__ == '__main__':
-    e = ETHBo()
-    product = ProductInfo(barcode=['12q', '23b'], manufacture='testing1a')
-    da = e.create_encode_product_token(product_info=product, user_id='zxcvbnjhgfdfyui')
-    print(da)
-    ta = e.decode_product_token(token=da)
-    print(ta)
+
+# if __name__ == '__main__':
+#     e = ETHBo()
+#     product = ProductInfo(barcode=['12q', '23b'], manufacture='testing1a')
+#     da = e.create_encode_product_token(product_info=product, user_id='zxcvbnjhgfdfyui')
+#     print(da)
+#     ta = e.decode_product_token(token=da)
+#     print(ta)

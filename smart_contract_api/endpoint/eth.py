@@ -17,6 +17,12 @@ async def create_product_token(request: ProductInfo,
     return to_json_response(SingleResponse(result=token))
 
 
+@router.post('/product/coin', responses={404: {'model': ExceptionResponse}}, response_model=SingleResponse[ProductInfo])
+async def verify_product_token_and_get_coin(product_token: str, barcodes: list[str], token=Depends(_authorization)):
+    product = await ETHBo().verify_token(barcodes=barcodes, user_token=token, product_token=product_token)
+    return to_json_response(SingleResponse(result=product))
+
+
 @router.get('/account', responses={404: {'model': ExceptionResponse}}, response_model=dict)
 async def get_user_wallet_account(token=Depends(_authorization)):
     return {"token": token}
