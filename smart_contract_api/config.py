@@ -8,8 +8,10 @@ class Settings(EnvironmentSettings):
     database_password: str
     database_name: str
     port: int
-    jwt_public_key: str
-    jwt_private_key: str
+    public_key: str
+    private_key: str
+    web3_provider: str
+    contract_address: str
 
 
 @lru_cache()

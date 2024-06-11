@@ -28,3 +28,20 @@ class AuthDao(BaseDao):
             WHERE id=$1
             ''', user_id
         )
+
+    async def insert_wallet(self, user_id: UUID) -> Record:
+        return await self.connection.fetchrow(
+            '''
+            INSERT INTO wallet ("id", "coin", "count")
+            VALUES ($1, $2, $3)
+            ON CONFLICT ("id", "coin") DO UPDATE SET "count" = wallet."count" + 1
+            RETURNING *
+            ''', user_id, 'bike_coin', 1
+        )
+
+    async def get_wallet(self, user_id: UUID) -> list[Record]:
+        return await self.connection.fetch(
+            '''
+            SELECT * FROM wallet WHERE id=$1
+            ''', user_id
+        )

@@ -7,3 +7,12 @@ CREATE TABLE "user_account" (
 	created_at timestamptz NOT NULL DEFAULT now(),
 	updated_at timestamptz NOT NULL DEFAULT now()
 );
+
+CREATE TABLE public.wallet (
+	id uuid DEFAULT uuid_generate_v4() NOT NULL,
+	coin varchar NOT NULL,
+	count int2 NOT NULL,
+	created_at timestamptz DEFAULT now() NOT NULL,
+	updated_at timestamptz DEFAULT now() NOT NULL,
+	CONSTRAINT wallet_pk PRIMARY KEY (id, coin)
+);
