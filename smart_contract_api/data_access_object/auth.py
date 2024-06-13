@@ -4,21 +4,22 @@ from smart_contract_api.data_access_object import BaseDao
 
 
 class AuthDao(BaseDao):
-    async def insert_user(self, name: str, password: str, eth_address: str, eht_key: str) -> Record:
+    async def insert_user(self, name: str, password: str, eth_address: str, eht_key: str,
+                          phone: str, birthday: str, address: str, email: str) -> Record:
         return await self.connection.fetchrow(
             '''
-            INSERT INTO user_account (name, password, eth_address, eht_key)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO user_account (name, password, eth_address, eht_key, phone, birthday, address, email)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
             RETURNING *;
-            ''', name, password, eth_address, eht_key
+            ''', name, password, eth_address, eht_key, phone, birthday, address, email
         )
 
-    async def query_user(self, name: str, password: str) -> Record:
+    async def query_user(self, phone: str, password: str) -> Record:
         return await self.connection.fetchrow(
             '''
             SELECT * FROM user_account 
-            WHERE name=$1 AND password=$2
-            ''', name, password
+            WHERE phone=$1 AND password=$2
+            ''', phone, password
         )
 
     async def query_user_by_id(self, user_id: UUID) -> Record:

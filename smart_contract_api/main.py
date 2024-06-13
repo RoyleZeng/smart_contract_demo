@@ -7,7 +7,7 @@ from smart_contract_api.lib.setting import EnvironmentParameter
 from smart_contract_api.lib.base_exception import (exception_to_json_response, UniqueViolationException,
                                                    ParameterViolationException, add_exception_handler,
                                                    use_route_names_as_operation_ids)
-from smart_contract_api.endpoint import auth, eth
+from smart_contract_api.endpoint import auth, eth, management, customer
 
 base_env = EnvironmentParameter()
 
@@ -31,6 +31,9 @@ app.add_middleware(CORSMiddleware, **_middleware)
 add_exception_handler(app)
 
 app.include_router(auth.router, prefix='/user', tags=['Auth'])
+app.include_router(management.router, prefix='/management', tags=['Management'])
+app.include_router(customer.router, prefix='/customer', tags=['Customer'])
+
 app.include_router(eth.router, prefix='/eth', tags=['Eth'])
 
 use_route_names_as_operation_ids(app)

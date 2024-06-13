@@ -37,6 +37,7 @@ class DSAKey(EnvironmentSettings):
             )
         return None
 
+
 class ETHBo:
     def __init__(self):
         self.key = DSAKey()
@@ -116,7 +117,6 @@ class ETHBo:
         dao: AuthDao = AuthDao(connection=connection, operator=None)
         wallet_list = await dao.get_wallet(user_id=user_token)
         return [Wallet(coin=wallet['coin'], count=wallet['count']) for wallet in wallet_list]
-
 
     def generate_qrcode(self, text: str):
         # 生成 QR 码

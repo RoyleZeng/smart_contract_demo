@@ -12,6 +12,8 @@ class Settings(EnvironmentSettings):
     private_key: str
     web3_provider: str
     contract_address: str
+    address_private_key: str
+    from_address: str
 
 
 @lru_cache()
