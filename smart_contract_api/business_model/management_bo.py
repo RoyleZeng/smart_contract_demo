@@ -101,7 +101,6 @@ class ManagementBO:
             product_info = ProductInfo(product_id=product_id, barcodes=request.barcodes, manufacture=user['name'],
                                        created_at=datetime.now().timestamp())
             product_token = self._generate_dsa_signed_token(claims=product_info.dict(), user_id=str(token))
-            print(product_token)
             await dao.insert_product(product_id=product_id, barcodes=request.barcodes, product_token=product_token)
             eth_bo.upload_data(product_id=product_id, barcode=request.barcodes, manufacture=user['name'],
                                product_token=product_token)

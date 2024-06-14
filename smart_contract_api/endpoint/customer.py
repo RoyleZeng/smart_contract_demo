@@ -13,8 +13,22 @@ router = APIRouter(route_class=APILog)
 _authorization = APIKeyHeader(name='Authorization', scheme_name="Authorization")
 
 
-@router.post('/verifyProduct', responses={404: {'model': ExceptionResponse}},
+@router.post('/verify_product', responses={404: {'model': ExceptionResponse}},
              response_model=SingleResponse[ProductData])
 async def verify_product(request: VerifyProductRequest, token=Depends(_authorization)):
     user = await CustomerBO().verify_product(request=request, token=token)
+    return to_json_response(SingleResponse(result=user))
+
+
+@router.post('/register_product', responses={404: {'model': ExceptionResponse}},
+             response_model=SingleResponse[ProductData])
+async def register_product_and_activate_warranty(request: VerifyProductRequest, token=Depends(_authorization)):
+    user = await CustomerBO().register_product(request=request, token=token)
+    return to_json_response(SingleResponse(result=user))
+
+
+@router.get('/product', responses={404: {'model': ExceptionResponse}},
+             response_model=SingleResponse[ProductData])
+async def get_product_list(token=Depends(_authorization)):
+    user = await CustomerBO().get_product_list(token=token)
     return to_json_response(SingleResponse(result=user))
